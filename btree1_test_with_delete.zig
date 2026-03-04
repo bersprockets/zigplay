@@ -106,7 +106,7 @@ pub fn main() !void {
 
     var t: std.Io.Threaded = .init_single_threaded;
     const io = t.io();
-    const timestamp = try std.Io.Clock.real.now(io);
+    const timestamp = std.Io.Clock.real.now(io);
     const seed: u64 = @intCast(timestamp.toMilliseconds());
     print("Seed is {d}\n", .{ seed });
     
