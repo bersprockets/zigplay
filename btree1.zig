@@ -54,7 +54,7 @@ pub fn BTree(t: u16) type {
             }
 
             // the number of children is one greater than the number of keys
-            var curr_idx: i32 = @as(i32, @intCast(parent.n));
+            var curr_idx: i32 = @intCast(parent.n);
             while (curr_idx + 1 > child_index) {
                 parent.children[@intCast(curr_idx + 1)] = parent.children[@intCast(curr_idx)];
                 curr_idx -= 1;
@@ -121,8 +121,7 @@ pub fn BTree(t: u16) type {
                 // make space for the new key: find each key that is greater than
                 // the new key, and move each key up one slot.
                 while (index >= 0 and k < node.keys[@intCast(index)].?) {
-                    const us_index = @as(usize, @intCast(index));
-                    node.keys[us_index + 1] = node.keys[us_index];
+                    node.keys[@intCast(index + 1)] = node.keys[@intCast(index)];
                     index -= 1;
                 }
                 node.keys[@intCast(index + 1)] = k;
@@ -136,7 +135,7 @@ pub fn BTree(t: u16) type {
                 }
                 
                 index = index + 1;
-                var us_index = @as(usize, @intCast(index));
+                var us_index: usize = @intCast(index);
                 try self.disk_read(node.children[us_index].?);
                 if (node.children[us_index].?.n == (2 * self.t) - 1) {
                     if (self.get_key_index(node.children[us_index].?, k)) |_| {
